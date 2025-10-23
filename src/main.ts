@@ -1,7 +1,15 @@
 import * as THREE from 'three';
 import { Engine } from './engine';
 
-const engine = new Engine();
+const engine = new Engine({
+  rendererParameters: {
+    antialias: true,
+  },
+  inputManagerOptions: {
+    freeOrbitCam: true,
+  },
+});
+
 const { scene, camera, renderer } = engine;
 
 // Create floor
