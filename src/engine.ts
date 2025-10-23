@@ -73,6 +73,10 @@ export class InputManager {
   private mousePosition: THREE.Vector2 = new THREE.Vector2();
   private mouseDelta: THREE.Vector2 = new THREE.Vector2();
 
+  private actions: InputAction[] = [];
+
+  private eventListeners: { [key: string]: EventListenerOrEventListenerObject } = {};
+
   constructor(camera: THREE.PerspectiveCamera, renderer: THREE.WebGPURenderer, options: InputManagerOptions) {
     this.camera = camera;
     this.renderer = renderer;
@@ -86,7 +90,7 @@ export class InputManager {
     this.freeCam = mergedOptions.freeCam.enabled;
     this.freeCamRotiationSpeed = mergedOptions.freeCam.rotationSpeed;
 
-    window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+    this.bindEvents();
   }
 
   public update() {
@@ -106,7 +110,76 @@ export class InputManager {
     this.mouseDelta.y = event.movementY;
   }
 
+  private onKeyDown(event: KeyboardEvent) {
+    // Handle keydown events here
+  }
+
+  private onKeyUp(event: KeyboardEvent) {
+    // Handle keyup events here
+  }
+
+  private onGamepadConnected(event: GamepadEvent) {
+    // Handle gamepad connection here
+  }
+
+  private onGamepadDisconnected(event: GamepadEvent) {
+    // Handle gamepad disconnection here
+  }
+
+  private bindEvents() {
+    window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+
+
+    // Intercept all key events
+    window.addEventListener('keydown', this.onKeyDown.bind(this), false);
+    window.addEventListener('keyup', this.onKeyUp.bind(this), false);
+
+    // Intercept gamepad events
+    window.addEventListener('gamepadconnected', this.onGamepadConnected.bind(this), false);
+    window.addEventListener('gamepaddisconnected', this.onGamepadDisconnected.bind(this), false);
+  }
+
 }
+
+
+// Define InputAction interface
+// This represents a mapping between an input event and an action in the engine
+// Keyboard codes are already standardized in the KeyboardEvent.code property
+// Gamepad API uses a polling based approach, so we will define buttons and axes by our own convention as shown below InputAction
+export interface InputAction {
+  name: string;
+  type: 'keyboard' | 'mouse' | 'gamepad';
+  code: string;
+  value: number;
+  callback: (value: number) => void;
+}
+
+// Define Gamepad Button and Axis codes
+export const GamepadButtons = {
+  A: 0,
+  B: 1,
+  X: 2,
+  Y: 3,
+  LB: 4,
+  RB: 5,
+  LT: 6,
+  RT: 7,
+  BACK: 8,
+  START: 9,
+  LS: 10,
+  RS: 11,
+  DPAD_UP: 12,
+  DPAD_DOWN: 13,
+  DPAD_LEFT: 14,
+  DPAD_RIGHT: 15,
+};
+
+export const GamepadAxes = {
+  LEFT_STICK_X: 0,
+  LEFT_STICK_Y: 1,
+  RIGHT_STICK_X: 2,
+  RIGHT_STICK_Y: 3,
+};
 
 // EngineOptions
 export interface EngineOptions {
