@@ -2,7 +2,7 @@
 import * as THREE from 'three/webgpu';
 import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURenderer.js';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import GUI from 'lil-gui';
 
 /**
  * Engine class to set up a basic Three.js scene with camera, renderer, and controls.
