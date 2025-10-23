@@ -65,15 +65,14 @@ export class Engine {
 export class InputManager {
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGPURenderer;
-  private freeCam: boolean;
-  private freeCamRotiationSpeed: number;
 
   private mousePosition: THREE.Vector2 = new THREE.Vector2();
   private mouseDelta: THREE.Vector2 = new THREE.Vector2();
 
-  private actions: InputAction[] = [];
+  // InputActions are mapped according to their type:code for easy lookup
+  private actions: Map<string, InputAction> = new Map();
 
-  private eventListeners: { [key: string]: EventListenerOrEventListenerObject } = {};
+  private gamepads: Map<number, Gamepad> = new Map();
 
   constructor(camera: THREE.PerspectiveCamera, renderer: THREE.WebGPURenderer, options: InputManagerOptions) {
     this.camera = camera;
@@ -85,48 +84,50 @@ export class InputManager {
       ...options,
     };
 
-    this.freeCam = mergedOptions.freeCam.enabled;
-    this.freeCamRotiationSpeed = mergedOptions.freeCam.rotationSpeed;
 
     this.bindEvents();
   }
 
   public update() {
-    if (this.freeCam) {
-      this.camera.rotation.y -= this.mouseDelta.x * this.freeCamRotiationSpeed;
-      this.camera.rotation.x -= this.mouseDelta.y * this.freeCamRotiationSpeed;
-    }
+
+  }
+
+  public bindAction(action: InputAction) {
+    this.actions.set(`${action.type}:${action.code}`, action);
   }
 
   private onMouseMove(event: MouseEvent) {
-    const rect = this.renderer.domElement.getBoundingClientRect();
-
-    this.mousePosition.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    this.mousePosition.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    this.mouseDelta.x = event.movementX;
-    this.mouseDelta.y = event.movementY;
+    // Actions will likely only need the delta, so grab that from the event and search the Map for any bound actions
+    this.mouseDelta.x = event.clientX - this.mousePosition.x;
+    this.mouseDelta.y = event.clientY - this.mousePosition.y;
+    this.mousePosition.x = event.clientX;
+    this.mousePosition.y = event.clientY;
+    this.findInputAction('mouse', MouseCodes.X)?.callback(this.mouseDelta.x);
+    this.findInputAction('mouse', MouseCodes.Y)?.callback(this.mouseDelta.y);
   }
 
   private onKeyDown(event: KeyboardEvent) {
-    // Handle keydown events here
+    this.findInputAction('keyboard', event.code)?.callback(1);
   }
 
   private onKeyUp(event: KeyboardEvent) {
-    // Handle keyup events here
+    this.findInputAction('keyboard', event.code)?.callback(0);
   }
 
-  private onGamepadConnected(event: GamepadEvent) {
-    // Handle gamepad connection here
+  private onGamepadConnected(event: GamepadEvent) {  
+    this.gamepads.set(event.gamepad.index, event.gamepad);
   }
 
   private onGamepadDisconnected(event: GamepadEvent) {
-    // Handle gamepad disconnection here
+    this.gamepads.delete(event.gamepad.index);
+  }
+
+  private findInputAction(type: 'keyboard' | 'mouse' | 'gamepad', code: string): InputAction | undefined {
+    return this.actions.get(`${type}:${code}`);
   }
 
   private bindEvents() {
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-
 
     // Intercept all key events
     window.addEventListener('keydown', this.onKeyDown.bind(this), false);
@@ -148,9 +149,18 @@ export interface InputAction {
   name: string;
   type: 'keyboard' | 'mouse' | 'gamepad';
   code: string;
-  value: number;
   callback: (value: number) => void;
 }
+
+export const MouseCodes = {
+  LEFT_BUTTON: 'LeftButton',
+  MIDDLE_BUTTON: 'MiddleButton',
+  RIGHT_BUTTON: 'RightButton',
+  WHEEL_UP: 'WheelUp',
+  WHEEL_DOWN: 'WheelDown',
+  X: 'X',
+  Y: 'Y',
+};
 
 // Define Gamepad Button and Axis codes
 export const GamepadButtons = {

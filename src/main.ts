@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Engine } from './engine';
+import { Engine, MouseCodes } from './engine';
 import { Entity } from './entity';
 
 const engine = new Engine({
@@ -33,8 +33,25 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 10, 7.5);
 const lightEntity = new Entity(light, scene);
 
-
 scene.add(cube);
+
+engine.inputManager.bindAction({
+  name: 'RotateCameraY',
+  type: 'mouse',
+  code: MouseCodes.Y,
+  callback: (value: number) => {
+    camera.rotation.x -= value * 0.002;
+  }
+});
+
+engine.inputManager.bindAction({
+  name: 'RotateCameraX',
+  type: 'mouse',
+  code: MouseCodes.X,
+  callback: (value: number) => {
+    camera.rotation.y -= value * 0.002;
+  }
+});
 
 function render() {
 
