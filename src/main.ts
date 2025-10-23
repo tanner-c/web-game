@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Engine } from './engine';
+import { Entity } from './entity';
 
 const engine = new Engine({
   rendererParameters: {
@@ -22,18 +23,18 @@ const material = new THREE.MeshPhysicalMaterial({
 
 const floorMesh = new THREE.Mesh(floor, material);
 floorMesh.position.y = -0.5;
-scene.add(floorMesh);
+const floorEntity = new Entity(floorMesh, scene);
 
 const cubeGeometry = new THREE.BoxGeometry();
 const cubeMaterial = new THREE.MeshPhysicalMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 cube.position.y = 1;
+const cubeEntity = new Entity(cube, scene);
 
 // Initialize light
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 10, 7.5);
-
-scene.add(light);
+const lightEntity = new Entity(light, scene);
 
 
 scene.add(cube);

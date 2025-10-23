@@ -1,5 +1,6 @@
 // Determine if WebGPU is supported, if not, fall back to WebGL
 import * as THREE from 'three/webgpu';
+import { EntityManager } from './entity'; 
 import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURenderer.js';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import GUI from 'lil-gui';
@@ -17,6 +18,7 @@ export class Engine {
   public camera: THREE.PerspectiveCamera;
   public renderer: THREE.WebGPURenderer;
   public inputManager: InputManager;
+  public entityManager: EntityManager = new EntityManager();
   public gui?: GUI;
   
   constructor(options: EngineOptions = {}) {
@@ -45,6 +47,8 @@ export class Engine {
     }
 
     this.inputManager.update();
+    this.entityManager.updateEntities();
+    
     this.renderer.render(this.scene, this.camera);
   }
 
