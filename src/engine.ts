@@ -15,7 +15,6 @@ import config from '../public/config.json';
  * const { scene, camera, renderer } = engine;
  */
 export class Engine {
-  public document: Document;
   public scene: THREE.Scene;
   public camera: THREE.PerspectiveCamera;
   public renderer: THREE.WebGPURenderer;
@@ -24,7 +23,6 @@ export class Engine {
   public gui?: GUI;
   
   constructor(options: EngineOptions = {}) {
-    this.document = document;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -32,7 +30,7 @@ export class Engine {
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setAnimationLoop(this.render.bind(this));
-    this.document.body.appendChild(this.renderer.domElement);
+    document.body.appendChild(this.renderer.domElement);
 
     this.camera.position.z = 5;
 
