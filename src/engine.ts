@@ -84,7 +84,6 @@ export class InputManager {
       ...options,
     };
 
-
     this.bindEvents();
   }
 
@@ -97,13 +96,25 @@ export class InputManager {
   }
 
   private onMouseMove(event: MouseEvent) {
+    this.renderer.domElement.requestPointerLock();
+
+
     // Actions will likely only need the delta, so grab that from the event and search the Map for any bound actions
-    this.mouseDelta.x = event.clientX - this.mousePosition.x;
-    this.mouseDelta.y = event.clientY - this.mousePosition.y;
-    this.mousePosition.x = event.clientX;
-    this.mousePosition.y = event.clientY;
-    this.findInputAction('mouse', MouseCodes.X)?.callback(this.mouseDelta.x);
-    this.findInputAction('mouse', MouseCodes.Y)?.callback(this.mouseDelta.y);
+    if (event.movementX !== 0) {
+      this.findInputAction('mouse', MouseCodes.X)?.callback(event.movementX);
+    }
+
+    if (event.movementY !== 0) {
+      this.findInputAction('mouse', MouseCodes.Y)?.callback(event.movementY);
+    }
+  }
+
+  private onMouseWheel(event: WheelEvent) {
+    if (event.deltaY < 0) {
+      this.findInputAction('mouse', MouseCodes.WHEEL_UP)?.callback(1);
+    } else {
+      this.findInputAction('mouse', MouseCodes.WHEEL_DOWN)?.callback(1);
+    }
   }
 
   private onKeyDown(event: KeyboardEvent) {
@@ -128,6 +139,7 @@ export class InputManager {
 
   private bindEvents() {
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+    window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
 
     // Intercept all key events
     window.addEventListener('keydown', this.onKeyDown.bind(this), false);
