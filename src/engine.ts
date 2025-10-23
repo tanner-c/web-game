@@ -33,12 +33,7 @@ export class Engine {
     // Initialize camera
     this.camera.position.z = 5;
 
-    // Initialize light
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5, 10, 7.5);
-    this.scene.add(light);
-
-    this.inputManager = new InputManager(this, options.inputManagerOptions || {});
+    this.inputManager = new InputManager(this.camera, this.renderer, options.inputManagerOptions || {});
   }
 
   private render() {
@@ -49,6 +44,7 @@ export class Engine {
       this.camera.updateProjectionMatrix();
     }
 
+    this.inputManager.update();
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -64,17 +60,41 @@ export class Engine {
 }
 
 export class InputManager {
-  private engine: Engine;
+  private camera: THREE.PerspectiveCamera;
+  private renderer: THREE.WebGPURenderer;
   private freeOrbitCam: boolean;
-  private controls?: OrbitControls;
 
-  constructor(engine: Engine, options: InputManagerOptions) {
-    this.engine = engine;
+  private mousePosition: THREE.Vector2 = new THREE.Vector2();
+  private mouseDelta: THREE.Vector2 = new THREE.Vector2();
+
+  constructor(camera: THREE.PerspectiveCamera, renderer: THREE.WebGPURenderer, options: InputManagerOptions) {
+    this.camera = camera;
+    this.renderer = renderer;
+
     this.freeOrbitCam = options.freeOrbitCam ?? true;
 
-    if (this.freeOrbitCam) {
-      this.controls = new OrbitControls(this.engine.camera, this.engine.renderer.domElement);
-    }
+    const controls = new OrbitControls(this.camera, this.renderer.domElement);
+  
+
+    window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+  }
+
+  public update() {
+    // if (this.freeOrbitCam) {
+    //   const rotationSpeed = 0.002;
+    //   this.camera.rotation.y -= this.mouseDelta.x * rotationSpeed;
+    //   this.camera.rotation.x -= this.mouseDelta.y * rotationSpeed;
+    // }
+  }
+
+  private onMouseMove(event: MouseEvent) {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+
+    this.mousePosition.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.mousePosition.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    this.mouseDelta.x = event.movementX;
+    this.mouseDelta.y = event.movementY;
   }
 
 }

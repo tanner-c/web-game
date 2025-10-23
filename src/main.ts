@@ -3,7 +3,7 @@ import { Engine } from './engine';
 
 const engine = new Engine({
   rendererParameters: {
-    antialias: true,
+    antialias: true
   },
   inputManagerOptions: {
     freeOrbitCam: true,
@@ -25,8 +25,17 @@ floorMesh.position.y = -0.5;
 scene.add(floorMesh);
 
 const cubeGeometry = new THREE.BoxGeometry();
-const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cubeMaterial = new THREE.MeshPhysicalMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cube.position.y = 1;
+
+// Initialize light
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5, 10, 7.5);
+
+scene.add(light);
+
+
 scene.add(cube);
 
 function render() {
