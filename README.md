@@ -2,6 +2,8 @@
 
 Simple game engine built in ThreeJS. Currently implementing the following features:
 
+**[Demo](https://tanner-c.github.io/web-game/)**
+
 * Input Handling
 * Entity Management
 * Rendering
