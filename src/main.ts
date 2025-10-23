@@ -5,10 +5,7 @@ import { Entity } from './entity';
 const engine = new Engine({
   rendererParameters: {
     antialias: true
-  },
-  inputManagerOptions: {
-    freeOrbitCam: true,
-  },
+  }
 });
 
 const { scene, camera, renderer } = engine;

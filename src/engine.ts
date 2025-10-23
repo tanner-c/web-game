@@ -5,6 +5,8 @@ import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURende
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import GUI from 'lil-gui';
 
+import config from '../public/config.json';
+
 /**
  * Engine class to set up a basic Three.js scene with camera, renderer, and controls.
  * @class Engine
@@ -32,7 +34,6 @@ export class Engine {
     this.renderer.setAnimationLoop(this.render.bind(this));
     this.document.body.appendChild(this.renderer.domElement);
 
-    // Initialize camera
     this.camera.position.z = 5;
 
     this.inputManager = new InputManager(this.camera, this.renderer, options.inputManagerOptions || {});
@@ -48,7 +49,7 @@ export class Engine {
 
     this.inputManager.update();
     this.entityManager.updateEntities();
-    
+
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -66,7 +67,8 @@ export class Engine {
 export class InputManager {
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGPURenderer;
-  private freeOrbitCam: boolean;
+  private freeCam: boolean;
+  private freeCamRotiationSpeed: number;
 
   private mousePosition: THREE.Vector2 = new THREE.Vector2();
   private mouseDelta: THREE.Vector2 = new THREE.Vector2();
@@ -75,20 +77,23 @@ export class InputManager {
     this.camera = camera;
     this.renderer = renderer;
 
-    this.freeOrbitCam = options.freeOrbitCam ?? true;
+    // Options overrides config, merge into one object
+    const mergedOptions = {
+      ...config.InputManager,
+      ...options,
+    };
 
-    const controls = new OrbitControls(this.camera, this.renderer.domElement);
-  
+    this.freeCam = mergedOptions.freeCam.enabled;
+    this.freeCamRotiationSpeed = mergedOptions.freeCam.rotationSpeed;
 
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
   }
 
   public update() {
-    // if (this.freeOrbitCam) {
-    //   const rotationSpeed = 0.002;
-    //   this.camera.rotation.y -= this.mouseDelta.x * rotationSpeed;
-    //   this.camera.rotation.x -= this.mouseDelta.y * rotationSpeed;
-    // }
+    if (this.freeCam) {
+      this.camera.rotation.y -= this.mouseDelta.x * this.freeCamRotiationSpeed;
+      this.camera.rotation.x -= this.mouseDelta.y * this.freeCamRotiationSpeed;
+    }
   }
 
   private onMouseMove(event: MouseEvent) {
@@ -111,5 +116,8 @@ export interface EngineOptions {
 }
 
 export interface InputManagerOptions {
-  freeOrbitCam?: boolean;
+  freeCam?: {
+    enabled: boolean;
+    rotationSpeed: number;
+  }
 }
