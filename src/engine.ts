@@ -2,7 +2,6 @@
 import * as THREE from 'three/webgpu';
 import { EntityManager } from './entity'; 
 import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURenderer.js';
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import GUI from 'lil-gui';
 
 import config from './config.json';

@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { Engine } from './engine';
-import { Entity } from './entity';
 import { setupControls } from './controls';
 
 const engine = new Engine({
