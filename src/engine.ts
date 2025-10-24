@@ -21,8 +21,12 @@ export class Engine {
   public inputManager: InputManager;
   public entityManager: EntityManager = new EntityManager();
   public gui?: GUI;
+
+  public static instance: Engine;
   
   constructor(options: EngineOptions = {}) {
+    Engine.instance = this;
+
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -95,10 +99,12 @@ export class InputManager {
     this.actions.set(`${action.type}:${action.code}`, action);
   }
 
-  private onMouseMove(event: MouseEvent) {
+  private onMouseDown(event: MouseEvent) {
+    // Request pointer lock
     this.renderer.domElement.requestPointerLock();
+  }
 
-
+  private onMouseMove(event: MouseEvent) {
     // Actions will likely only need the delta, so grab that from the event and search the Map for any bound actions
     if (event.movementX !== 0) {
       this.findInputAction('mouse', MouseCodes.X)?.callback(event.movementX);
@@ -140,6 +146,7 @@ export class InputManager {
   private bindEvents() {
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
     window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
+    window.addEventListener('mousedown', this.onMouseDown.bind(this), false);
 
     // Intercept all key events
     window.addEventListener('keydown', this.onKeyDown.bind(this), false);
