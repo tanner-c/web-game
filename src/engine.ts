@@ -54,23 +54,12 @@ export class Engine {
     this.renderer.render(this.scene, this.camera);
   }
 
-  private initializeGui() {
-    const gui = new GUI();
-
-    this.gui = gui;
-
-    const mainMenu = gui.addFolder('Main Menu');
-    mainMenu.open();
-
-  }
 }
 
 export class InputManager {
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGPURenderer;
 
-  private mousePosition: THREE.Vector2 = new THREE.Vector2();
-  private mouseDelta: THREE.Vector2 = new THREE.Vector2();
 
   // InputActions are mapped according to their type:code for easy lookup
   private actions: Map<string, InputAction> = new Map();
@@ -82,10 +71,6 @@ export class InputManager {
     this.renderer = renderer;
 
     // Options overrides config, merge into one object
-    const mergedOptions = {
-      ...config.InputManager,
-      ...options,
-    };
 
     this.bindEvents();
   }

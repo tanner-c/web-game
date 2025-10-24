@@ -10,13 +10,8 @@ export function setupControls() {
     type: 'mouse',
     code: MouseCodes.Y,
     callback: (value: number) => {
-      // pitch (local X). invert/scale as needed.
       const pitchDelta = -value * 0.001;
       camera.rotateX(pitchDelta);
-
-      // clamp pitch to avoid flipping
-      const limit = Math.PI / 2 - 0.01;
-      camera.rotation.x = THREE.MathUtils.clamp(camera.rotation.x, -limit, limit);
     }
   });
 
@@ -25,7 +20,6 @@ export function setupControls() {
     type: 'mouse',
     code: MouseCodes.X,
     callback: (value: number) => {
-      // yaw around world up (use camera.up to respect configured up vector)
       const yawDelta = -value * 0.001;
       const up = camera.up.clone().normalize();
       camera.rotateOnWorldAxis(up, yawDelta);

@@ -30,6 +30,8 @@ cube.position.y = 1;
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 10, 7.5);
 
+scene.add(floorMesh);
+scene.add(light);
 scene.add(cube);
 
 setupControls();
