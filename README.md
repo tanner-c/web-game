@@ -11,13 +11,9 @@ Simple game engine built in ThreeJS. Currently implementing the following featur
 
 This project demonstrates the following competencies:
 
-- Three.js WebGPU renderer setup with responsive resize handling
-- Animation loop management and scene/camera rendering
-- Perspective camera configuration and OrbitControls integration
-- Input handling scaffold capturing mouse position and delta
-- Scene graph basics: geometry, materials, meshes, and lighting
-- Modular engine architecture with configurable options (Engine, InputManager)
-- GUI scaffolding via lil-gui for future runtime controls
+- Building systems with ThreeJS
+- Structuring a game engine
+- Complex input handling
 
 Notes
 - Physics is listed in planned features but not yet implemented in code.
