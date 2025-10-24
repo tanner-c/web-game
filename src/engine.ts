@@ -4,7 +4,6 @@ import { EntityManager } from './entity';
 import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURenderer.js';
 import GUI from 'lil-gui';
 
-import config from './config.json';
 
 /**
  * Engine class to set up a basic Three.js scene with camera, renderer, and controls.
