@@ -1,6 +1,6 @@
 // Determine if WebGPU is supported, if not, fall back to WebGL
 import * as THREE from 'three/webgpu';
-import { EntityManager } from './entity'; 
+import { ComponentManager } from './component'; 
 import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURenderer.js';
 import GUI from 'lil-gui';
 
@@ -17,7 +17,7 @@ export class Engine {
   public camera: THREE.PerspectiveCamera;
   public renderer: THREE.WebGPURenderer;
   public inputManager: InputManager;
-  public entityManager: EntityManager = new EntityManager();
+  public componentManager: ComponentManager = new ComponentManager();
   public gui?: GUI;
 
   public static instance: Engine;
@@ -48,7 +48,7 @@ export class Engine {
     }
 
     this.inputManager.update();
-    this.entityManager.updateEntities();
+    this.componentManager.updateComponents();
 
     this.renderer.render(this.scene, this.camera);
   }

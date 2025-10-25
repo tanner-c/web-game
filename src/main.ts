@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Engine } from './engine';
 import { setupControls } from './controls';
+import { Component } from './component';
 
 const engine = new Engine({
   rendererParameters: {
@@ -25,6 +26,10 @@ const cubeGeometry = new THREE.BoxGeometry();
 const cubeMaterial = new THREE.MeshPhysicalMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 cube.position.y = 1;
+
+const cubeRotateComponent = new Component(cube, () => {
+  cubeRotateComponent.object3D.rotation.x += 0.01;
+});
 
 // Initialize light
 const light = new THREE.DirectionalLight(0xffffff, 1);
