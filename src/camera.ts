@@ -1,6 +1,7 @@
 import { Component } from "./component";
 import * as THREE from 'three/webgpu';
-import { Engine, MouseCodes } from "./engine";
+import { Engine } from "./engine";
+import { MouseCodes } from "./input";
 
 export class FreeCamComponent extends Component {
   private camera: THREE.PerspectiveCamera;
