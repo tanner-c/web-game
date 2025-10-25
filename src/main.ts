@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Engine } from './engine';
-import { setupControls } from './controls';
 import { Component } from './component';
+import { FreeCamComponent } from './camera';
 
 const engine = new Engine({
   rendererParameters: {
@@ -35,8 +35,8 @@ const cubeRotateComponent = new Component(cube, () => {
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 10, 7.5);
 
+const freeCam = new FreeCamComponent(engine.camera);
+
 scene.add(floorMesh);
 scene.add(light);
 scene.add(cube);
-
-setupControls();
