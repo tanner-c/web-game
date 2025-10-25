@@ -1,5 +1,7 @@
 # ThreeJS Game Engine
 
+![Diagram of the engine](./docs/diagram.png)
+
 Simple game engine built in ThreeJS. Currently implementing the following features:
 
 **[Demo](https://tanner-c.github.io/web-game/)**
