@@ -47,7 +47,7 @@ export class Engine {
     }
 
     this.inputManager.update();
-    this.componentManager.updateComponents();
+    this.componentManager.update();
 
     this.renderer.render(this.scene, this.camera);
   }

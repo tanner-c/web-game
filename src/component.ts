@@ -15,7 +15,7 @@ export class ComponentManager {
     }
   }
 
-  public updateComponents() {
+  public update() {
     for (const component of this.components) {
       component.update();
     }
