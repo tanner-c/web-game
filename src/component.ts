@@ -16,8 +16,8 @@ export class ComponentManager {
   }
 
   public updateComponents() {
-    for (const entity of this.components) {
-      entity.update();
+    for (const component of this.components) {
+      component.update();
     }
   }
 }
