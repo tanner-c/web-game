@@ -17,7 +17,7 @@ export interface InputAction {
   name: string;
   type: 'keyboard' | 'mouse' | 'gamepad';
   code: string;
-  callback: (value: number) => void;
+  callback?: (value: number) => void;
 }
 
 export const MouseCodes = {
@@ -80,6 +80,10 @@ export class InputManager {
 
   }
 
+  public unbindAction(name: string, type: 'keyboard' | 'mouse' | 'gamepad') {
+    this.actions.delete(`${type}:${name}`);
+  }
+
   public bindAction(action: InputAction) {
     this.actions.set(`${action.type}:${action.code}`, action);
   }
@@ -92,28 +96,28 @@ export class InputManager {
   private onMouseMove(event: MouseEvent) {
     // Actions will likely only need the delta, so grab that from the event and search the Map for any bound actions
     if (event.movementX !== 0) {
-      this.findInputAction('mouse', MouseCodes.X)?.callback(event.movementX);
+      this.findInputAction('mouse', MouseCodes.X)?.callback?.(event.movementX);
     }
 
     if (event.movementY !== 0) {
-      this.findInputAction('mouse', MouseCodes.Y)?.callback(event.movementY);
+      this.findInputAction('mouse', MouseCodes.Y)?.callback?.(event.movementY);
     }
   }
 
   private onMouseWheel(event: WheelEvent) {
     if (event.deltaY < 0) {
-      this.findInputAction('mouse', MouseCodes.WHEEL_UP)?.callback(1);
+      this.findInputAction('mouse', MouseCodes.WHEEL_UP)?.callback?.(1);
     } else {
-      this.findInputAction('mouse', MouseCodes.WHEEL_DOWN)?.callback(1);
+      this.findInputAction('mouse', MouseCodes.WHEEL_DOWN)?.callback?.(1);
     }
   }
 
   private onKeyDown(event: KeyboardEvent) {
-    this.findInputAction('keyboard', event.code)?.callback(1);
+    this.findInputAction('keyboard', event.code)?.callback?.(1);
   }
 
   private onKeyUp(event: KeyboardEvent) {
-    this.findInputAction('keyboard', event.code)?.callback(0);
+    this.findInputAction('keyboard', event.code)?.callback?.(0);
   }
 
   private onGamepadConnected(event: GamepadEvent) {  
