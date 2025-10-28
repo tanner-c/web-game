@@ -76,9 +76,7 @@ export class InputManager {
     this.bindEvents();
   }
 
-  public update() {
-
-  }
+  public update() { }
 
   public unbindAction(name: string, type: 'keyboard' | 'mouse' | 'gamepad') {
     this.actions.delete(`${type}:${name}`);
@@ -120,7 +118,7 @@ export class InputManager {
     this.findInputAction('keyboard', event.code)?.callback?.(0);
   }
 
-  private onGamepadConnected(event: GamepadEvent) {  
+  private onGamepadConnected(event: GamepadEvent) {
     this.gamepads.set(event.gamepad.index, event.gamepad);
   }
 
@@ -145,6 +143,5 @@ export class InputManager {
     window.addEventListener('gamepadconnected', this.onGamepadConnected.bind(this), false);
     window.addEventListener('gamepaddisconnected', this.onGamepadDisconnected.bind(this), false);
   }
-
 }
 

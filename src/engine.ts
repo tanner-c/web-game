@@ -54,7 +54,9 @@ export class Engine {
 
 }
 
-// EngineOptions
+/**
+ * EngineOptions interface for configuring the Engine.
+ */
 export interface EngineOptions {
   document?: Document;
   rendererParameters?: WebGPURendererParameters;
