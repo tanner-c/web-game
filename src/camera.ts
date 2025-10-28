@@ -17,7 +17,7 @@ export class FreeCamComponent extends Component {
 
     const { camera } = engine;
 
-    engine.inputManager.bindAction({
+    this.bindAction({
       name: 'RotateCameraY',
       type: 'mouse',
       code: MouseCodes.Y,
@@ -27,7 +27,7 @@ export class FreeCamComponent extends Component {
       }
     });
 
-    engine.inputManager.bindAction({
+    this.bindAction({
       name: 'RotateCameraX',
       type: 'mouse',
       code: MouseCodes.X,
@@ -38,7 +38,7 @@ export class FreeCamComponent extends Component {
       }
     });
 
-    engine.inputManager.bindAction({
+    this.bindAction({
       name: 'ZoomCamera',
       type: 'mouse',
       code: MouseCodes.WHEEL_UP,
@@ -49,7 +49,7 @@ export class FreeCamComponent extends Component {
       }
     });
 
-    engine.inputManager.bindAction({
+    this.bindAction({
       name: 'ZoomOutCamera',
       type: 'mouse',
       code: MouseCodes.WHEEL_DOWN,
@@ -59,18 +59,5 @@ export class FreeCamComponent extends Component {
         camera.position.addScaledVector(dir, value * 0.1); // move back on wheel down
       }
     });
-  }
-
-  // TODO: I'd really like to avoid having to unbind each action manually
-  // perhaps have a way to group them or tag them for easier unbinding?
-  // Or have the InputManager track which component bound which actions?
-  public dispose() {
-    super.dispose();
-
-    const engine = Engine.instance;
-    engine.inputManager.unbindAction('RotateCameraY', 'mouse');
-    engine.inputManager.unbindAction('RotateCameraX', 'mouse');
-    engine.inputManager.unbindAction('ZoomCamera', 'mouse');
-    engine.inputManager.unbindAction('ZoomOutCamera', 'mouse');
   }
 }
