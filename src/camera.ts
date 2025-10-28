@@ -60,4 +60,17 @@ export class FreeCamComponent extends Component {
       }
     });
   }
+
+  // TODO: I'd really like to avoid having to unbind each action manually
+  // perhaps have a way to group them or tag them for easier unbinding?
+  // Or have the InputManager track which component bound which actions?
+  public dispose() {
+    super.dispose();
+
+    const engine = Engine.instance;
+    engine.inputManager.unbindAction('RotateCameraY', 'mouse');
+    engine.inputManager.unbindAction('RotateCameraX', 'mouse');
+    engine.inputManager.unbindAction('ZoomCamera', 'mouse');
+    engine.inputManager.unbindAction('ZoomOutCamera', 'mouse');
+  }
 }
