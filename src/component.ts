@@ -50,6 +50,9 @@ export class Component {
     Engine.instance.componentManager.addComponent(this);
     this.object3D.userData.components.push(this);
 
+    this.object3D.addEventListener('removed' , () => {
+      this.dispose();
+    });
   }
 
   // This method allows components to bind input actions to the engine's input manager
