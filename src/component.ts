@@ -103,6 +103,7 @@ export class Component extends THREE.EventDispatcher<ComponentEventMap> {
 
   // Deserialize a component from JSON
   // FIX: This restores components, but FreeCamComponent logic fails to rebind input actions
+  // FIX: Anonymous components (base Component class) cannot be restored properly
   public static fromJSON(json: any): Component {
     // Get type from JSON, default to 'Component' if not present
 
