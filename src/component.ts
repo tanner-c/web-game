@@ -32,6 +32,24 @@ export class ComponentManager {
       component.update();
     }
   }
+
+  public toJSON() {
+    return this.components.map(component => component.toJSON());
+  }
+
+  public loadComponentsFromJSON(jsonArray: any[]) {
+    for (const json of jsonArray) {
+      Component.fromJSON(json);
+    }
+  }
+
+  public clear() {
+    for (const component of this.components) {
+      component.dispose();
+    }
+
+    this.components = [];
+  }
 }
 
 /**
@@ -74,8 +92,32 @@ export class Component extends THREE.EventDispatcher<ComponentEventMap> {
     this.boundInputActions.push(action);
   }
 
+  // Serialize the component to JSON
+  // This only serializes basic information; custom data should be added in subclasses
   public toJSON() {
-    return this.object3D.toJSON();
+    return {
+      type: (this as any).type ?? this.constructor.name,
+      object3D: this.object3D.uuid,
+    };
+  }
+
+  // Deserialize a component from JSON
+  // FIX: This restores components, but FreeCamComponent logic fails to rebind input actions
+  public static fromJSON(json: any): Component {
+    // Get type from JSON, default to 'Component' if not present
+
+    const type = json.type || 'Component';
+
+    // Find the object3D by UUID in the scene
+    const object3D = Engine.instance.scene.getObjectByProperty('uuid', json.object3D);
+
+    if (!object3D) {
+      throw new Error(`Object3D with UUID ${json.object3D} not found in scene`);
+    }
+
+    // Find the component class by type
+    const componentClass = (globalThis as any)[type] || Component;
+    return new componentClass(object3D);
   }
 
   public dispose() {
