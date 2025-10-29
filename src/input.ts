@@ -78,12 +78,12 @@ export class InputManager {
 
   public update() { }
 
-  public unbindAction(name: string, type: 'keyboard' | 'mouse' | 'gamepad') {
-    this.actions.delete(`${type}:${name}`);
+  public unbindAction(name: string) {
+    this.actions.delete(`${name}`);
   }
 
   public bindAction(action: InputAction) {
-    this.actions.set(`${action.type}:${action.code}`, action);
+    this.actions.set(`${action.name}`, action);
   }
 
   private onMouseDown(event: MouseEvent) {
