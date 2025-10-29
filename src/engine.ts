@@ -35,6 +35,8 @@ export class Engine {
     this.renderer.setAnimationLoop(this.render.bind(this));
     document.body.appendChild(this.renderer.domElement);
 
+    this.scene.add(this.camera);
+
     this.inputManager = new InputManager(this.camera, this.renderer, options.inputManagerOptions || {});
   }
 
