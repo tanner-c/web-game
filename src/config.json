@@ -1,8 +1,0 @@
-{
-  "InputManager": {
-    "freeCam": {
-      "enabled": true,
-      "rotationSpeed": 0.002
-    }
-  }
-}
