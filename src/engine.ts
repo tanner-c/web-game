@@ -37,7 +37,7 @@ export class Engine {
 
     this.scene.add(this.camera);
 
-    this.inputManager = new InputManager(this.camera, this.renderer, options.inputManagerOptions || {});
+    this.inputManager = new InputManager(this.renderer, options.inputManagerOptions || {});
   }
 
   private render() {

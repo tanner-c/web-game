@@ -58,7 +58,6 @@ export const GamepadAxes = {
 };
 
 export class InputManager {
-  private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGPURenderer;
 
 
@@ -67,8 +66,7 @@ export class InputManager {
 
   private gamepads: Map<number, Gamepad> = new Map();
 
-  constructor(camera: THREE.PerspectiveCamera, renderer: THREE.WebGPURenderer, options: InputManagerOptions) {
-    this.camera = camera;
+  constructor(renderer: THREE.WebGPURenderer, options: InputManagerOptions) {
     this.renderer = renderer;
 
     // Options overrides config, merge into one object
@@ -83,7 +81,7 @@ export class InputManager {
   }
 
   public bindAction(action: InputAction) {
-    this.actions.set(`${action.name}`, action);
+    this.actions.set(`${action.type}:${action.code}`, action);
   }
 
   private onMouseDown(event: MouseEvent) {
