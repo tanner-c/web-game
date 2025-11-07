@@ -20,6 +20,7 @@ export class Engine {
   public inputManager: InputManager;
   public componentManager: ComponentManager = new ComponentManager();
   public gui?: GUI;
+  public clock: THREE.Clock;
 
   public static instance: Engine;
   
@@ -27,6 +28,7 @@ export class Engine {
     Engine.instance = this;
 
     this.scene = new THREE.Scene();
+    this.clock = new THREE.Clock();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     this.renderer = new THREE.WebGPURenderer(options.rendererParameters);
@@ -48,7 +50,9 @@ export class Engine {
       this.camera.updateProjectionMatrix();
     }
 
-    this.inputManager.update();
+    const deltaTime = this.clock.getDelta();    
+
+    this.inputManager.update(deltaTime);
     this.componentManager.update();
 
     this.renderer.render(this.scene, this.camera);

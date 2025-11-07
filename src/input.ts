@@ -66,6 +66,8 @@ export class InputManager {
 
   private gamepads: Map<number, Gamepad> = new Map();
 
+  private keyState: Map<string, boolean> = new Map();
+
   constructor(renderer: THREE.WebGPURenderer, options: InputManagerOptions) {
     this.renderer = renderer;
 
@@ -74,7 +76,18 @@ export class InputManager {
     this.bindEvents();
   }
 
-  public update() { }
+  public update(deltaTime: number) { 
+    for (const action of this.actions.values()) {
+      if (action.type === 'keyboard') {
+        const isPressed = this.keyState.get(action.code);
+        if (isPressed) {
+          action.callback?.(1);
+        } else {
+          action.callback?.(0);
+        }
+      }
+    }
+  }
 
   public unbindAction(name: string) {
     this.actions.delete(`${name}`);
@@ -109,11 +122,11 @@ export class InputManager {
   }
 
   private onKeyDown(event: KeyboardEvent) {
-    this.findInputAction('keyboard', event.code)?.callback?.(1);
+    this.keyState.set(event.code, true);
   }
 
   private onKeyUp(event: KeyboardEvent) {
-    this.findInputAction('keyboard', event.code)?.callback?.(0);
+    this.keyState.set(event.code, false);
   }
 
   private onGamepadConnected(event: GamepadEvent) {
