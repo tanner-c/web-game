@@ -1,6 +1,6 @@
 import { Component } from './component';
 import { Engine } from './engine';
-import * as THREE from 'three/webgpu';
+import * as THREE from 'three';
 
 class PlayerComponent extends Component {
     constructor(object3D: THREE.Object3D) {

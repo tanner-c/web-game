@@ -1,7 +1,7 @@
 // Determine if WebGPU is supported, if not, fall back to WebGL
-import * as THREE from 'three/webgpu';
+import * as THREE from 'three';
 import { ComponentManager } from './component'; 
-import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURenderer.js';
+
 import { InputManager, InputManagerOptions } from './input';
 import GUI from 'lil-gui';
 
@@ -16,7 +16,7 @@ import GUI from 'lil-gui';
 export class Engine {
   public scene: THREE.Scene;
   public camera: THREE.PerspectiveCamera;
-  public renderer: THREE.WebGPURenderer;
+  public renderer: THREE.WebGLRenderer;
   public inputManager: InputManager;
   public componentManager: ComponentManager = new ComponentManager();
   public gui?: GUI;
@@ -31,7 +31,7 @@ export class Engine {
     this.clock = new THREE.Clock();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-    this.renderer = new THREE.WebGPURenderer(options.rendererParameters);
+    this.renderer = new THREE.WebGLRenderer(options.rendererParameters);
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setAnimationLoop(this.render.bind(this));
@@ -65,6 +65,6 @@ export class Engine {
  */
 export interface EngineOptions {
   document?: Document;
-  rendererParameters?: WebGPURendererParameters;
+  rendererParameters?: THREE.WebGLRendererParameters;
   inputManagerOptions?: InputManagerOptions;
 }

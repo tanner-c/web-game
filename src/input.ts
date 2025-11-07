@@ -1,4 +1,4 @@
-import * as THREE from 'three/webgpu';
+import * as THREE from 'three';
 import { Engine } from './engine';
 
 
@@ -58,7 +58,7 @@ export const GamepadAxes = {
 };
 
 export class InputManager {
-  private renderer: THREE.WebGPURenderer;
+  private renderer: THREE.WebGLRenderer;
 
 
   // InputActions are mapped according to their type:code for easy lookup
@@ -68,7 +68,7 @@ export class InputManager {
 
   private keyState: Map<string, boolean> = new Map();
 
-  constructor(renderer: THREE.WebGPURenderer, options: InputManagerOptions) {
+  constructor(renderer: THREE.WebGLRenderer, options: InputManagerOptions) {
     this.renderer = renderer;
 
     // Options overrides config, merge into one object
