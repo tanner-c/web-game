@@ -129,7 +129,7 @@ export class Component extends THREE.EventDispatcher<ComponentEventMap> {
 
     // Unbind any input actions bound by this component
     for (const action of this.boundInputActions) {
-      Engine.instance.inputManager.unbindAction(action.name);
+      Engine.instance.inputManager.unbindAction(`${action.type}:${action.code}`);
     }
 
     this.object3D.userData.components = this.object3D.userData.components.filter((comp: Component) => comp !== this);
