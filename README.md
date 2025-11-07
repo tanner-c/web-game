@@ -9,13 +9,10 @@ Simple game engine built in ThreeJS. Currently implementing the following featur
 * Input Handling
 * Entity Management
 * Rendering
-* Physics Simulation
+* Physics Simulation (Planned)
 
 This project demonstrates the following competencies:
 
 - Building systems with ThreeJS
 - Structuring a game engine
 - Complex input handling
-
-Notes
-- Physics is listed in planned features but not yet implemented in code.
