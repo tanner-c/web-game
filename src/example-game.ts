@@ -49,7 +49,7 @@ export function initializeGame(engine: Engine) {
     const { scene, camera } = engine;
 
     // Create floor
-    const floorGeometry = new THREE.BoxGeometry(10, 1, 10);
+    const floorGeometry = new THREE.BoxGeometry(50, 1, 50);
     const floorMaterial = new THREE.MeshPhysicalMaterial({
         color: '#df1010ff',
         roughness: 0.5,
