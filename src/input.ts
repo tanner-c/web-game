@@ -97,10 +97,7 @@ export class InputManager {
     this.actions.set(`${action.type}:${action.code}`, action);
   }
 
-  private onMouseDown(event: MouseEvent) {
-    // Request pointer lock
-    this.renderer.domElement.requestPointerLock();
-  }
+  private onMouseDown(event: MouseEvent) { }
 
   private onMouseMove(event: MouseEvent) {
     // Actions will likely only need the delta, so grab that from the event and search the Map for any bound actions
