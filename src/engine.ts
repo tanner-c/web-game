@@ -24,7 +24,7 @@ export class Engine {
 
   public static instance: Engine;
   
-  constructor(options: EngineOptions = {}) {
+  constructor(element: HTMLElement, options: EngineOptions = {}) {
     Engine.instance = this;
 
     this.scene = new THREE.Scene();
@@ -35,7 +35,7 @@ export class Engine {
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setAnimationLoop(this.render.bind(this));
-    document.body.appendChild(this.renderer.domElement);
+    element.appendChild(this.renderer.domElement);
 
     this.scene.add(this.camera);
 
